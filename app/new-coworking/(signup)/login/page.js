@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash, FaLock, FaUser } from "react-icons/fa";
@@ -29,6 +29,9 @@ import { Input } from "@/components/ui/input";
 
 export default function Page() {
 	const router = useRouter();
+	const searchParams = useSearchParams();
+	const callbackUrl = searchParams.get("callbackUrl") || "/";
+
 	const [isLoading, setLoading] = useState(false);
 	const [error, setError] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
@@ -47,7 +50,7 @@ export default function Page() {
 		try {
 			const res = await login(data);
 			if (res.status === 200) {
-				router.push("/home");
+				router.push(callbackUrl);
 			} else {
 				setError(res.message);
 			}

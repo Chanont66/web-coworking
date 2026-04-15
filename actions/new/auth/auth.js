@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { loginSchema, signupSchema } from "./zod";
+import { SignJWT } from "jose";
 
 export async function signup(data) {
 	const result = signupSchema.safeParse(data);
@@ -18,7 +19,7 @@ export async function signup(data) {
 	const { username, password, email, firstName, lastName, phone } = result.data;
 
 	try {
-		const existing_user = await prisma.profile.findFirst({
+		const existing_user = await prisma.profile.findUnique({
 			where: { OR: [{ username }, { email }] },
 		});
 
@@ -61,7 +62,7 @@ export async function login(data) {
 	const { username, password } = result.data;
 
 	try {
-		const find_user = await prisma.profile.findFirst({
+		const find_user = await prisma.profile.findUnique({
 			where: { username },
 		});
 
@@ -73,7 +74,17 @@ export async function login(data) {
 		}
 
 		const session = await cookies();
-		session.set("session", find_user.id, {
+		const secret = new TextEncoder().encode(
+			process.env.JWT_SECRET || "fallback_secret_key",
+		);
+
+		// สร้าง Token ป้องกันคนแก้ id ผ่าน Cookie
+		const token = await new SignJWT({ id: find_user.id })
+			.setProtectedHeader({ alg: "HS256" })
+			.setIssuedAt()
+			.setExpirationTime("7d")
+			.sign(secret);
+		session.set("session", token, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
 			maxAge: 60 * 60 * 24 * 7, // 7 วัน

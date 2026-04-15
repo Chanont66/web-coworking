@@ -1,6 +1,8 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import MyFooter from "@/components/my-components/footer";
 import { Toaster } from "@/components/ui/sonner";
+import "./globals.css";
+import { Geist, Geist_Mono } from "next/font/google";
+import Navbar from "@/components/my-components/navbar";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -20,8 +22,6 @@ export const viewport = {
 	width: "device-width",
 	initialScale: 1,
 };
-// width=device-width - บอกให้เบราว์เซอร์ใช้ความกว้างของอุปกรณ์จริงเป็นความกว้างของ viewport (พื้นที่แสดงผล)
-// initial-scale=1.0 - กำหนดระดับการซูมเริ่มต้นเป็น 1.0 (ไม่มีการซูมเข้าหรือออก)
 
 export default function RootLayout({ children }) {
 	return (
@@ -29,8 +29,13 @@ export default function RootLayout({ children }) {
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				{children}
-				<Toaster />
+				<div className="flex flex-col min-h-screen">
+					<Navbar />
+					<main className="flex-1">{children}</main>
+
+					<Toaster position="top-center" />
+					<MyFooter />
+				</div>
 			</body>
 		</html>
 	);

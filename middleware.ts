@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
 	}
 
 	if (hasSession && isLoginPage) {
-		return NextResponse.redirect(new URL("/home", request.url));
+		return NextResponse.redirect(new URL("/", request.url));
 	}
 
 	return NextResponse.next();

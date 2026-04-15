@@ -17,7 +17,6 @@ model Profile {
   firstName String?  @map("first_name")
   lastName  String?  @map("last_name")
   phone     String?
-  role      String   @default("user")
   balance   Decimal  @default(0.00) @db.Decimal(10, 2)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -29,12 +28,12 @@ model Profile {
 }
 
 model RoomType {
-  id           Int     @id @default(autoincrement())
-  name         String
-  description  String?
-  capacity     Int
-  pricePerHour Decimal @map("price_per_hour") @db.Decimal(10, 2)
-  imageUrl     String? @map("image_url")
+  id            Int     @id @default(autoincrement())
+  name          String
+  description   String?
+  capacity      Int
+  pricePerRound Decimal @map("price_per_round") @db.Decimal(10, 2)
+  imageUrl      String? @map("image_url")
 
   rooms Room[]
 
@@ -46,7 +45,7 @@ model Room {
   name        String
   typeId      Int     @map("type_id")
   description String?
-  isActive    Boolean @default(true) @map("is_active")
+  // isActive    Boolean @default(true) @map("is_active")
 
   roomType RoomType  @relation(fields: [typeId], references: [id])
   bookings Booking[]
