@@ -18,17 +18,6 @@ export async function booking(data) {
 					roomId: roomId,
 					timeSlotId: timeSlotId,
 					bookingDate: new Date(bookingDate),
-					OR: [
-						{
-							status: "confirmed",
-						},
-						{
-							status: "pending",
-							createdAt: {
-								gte: new Date(Date.now() - 15 * 60 * 1000),
-							},
-						},
-					],
 				},
 			});
 
@@ -44,7 +33,6 @@ export async function booking(data) {
 					timeSlotId: timeSlotId,
 					bookingDate: new Date(bookingDate),
 					totalPrice: totalPrice,
-					status: "pending",
 				},
 			});
 
@@ -67,13 +55,29 @@ export async function booking(data) {
 				},
 			});
 
+			// ดึงข้อมูลห้องและช่วงเวลา เพื่อเอามาเขียน description
+			const room = await tx.room.findUnique({
+				where: { id: roomId },
+				select: { name: true },
+			});
+
+			const timeSlot = await tx.timeSlot.findUnique({
+				where: { id: timeSlotId },
+				select: { startTime: true, endTime: true, label: true },
+			});
+
+			const formattedDate = new Date(bookingDate).toLocaleDateString("th-TH", {
+				year: "numeric",
+				month: "long",
+				day: "numeric",
+			});
+
 			// เพิ่มรายการธุรกรรม (ประวัติ)
 			await tx.transaction.create({
 				data: {
 					userId: userId,
 					amount: totalPrice,
-					type: "payment",
-					description: `รายการจองห้อง ${roomId}`,
+					description: `จองห้อง ${room?.name || roomId} (${timeSlot?.label}: ${timeSlot?.startTime}-${timeSlot?.endTime}) วันที่จอง ${formattedDate}`,
 				},
 			});
 		});

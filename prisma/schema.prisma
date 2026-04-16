@@ -17,6 +17,7 @@ model Profile {
   firstName String?  @map("first_name")
   lastName  String?  @map("last_name")
   phone     String?
+  // role      String   @default("user") // เอาออกเพราะมันไม่ได้ใช้ ไม่มี admin
   balance   Decimal  @default(0.00) @db.Decimal(10, 2)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -44,8 +45,8 @@ model Room {
   id          Int     @id @default(autoincrement())
   name        String
   typeId      Int     @map("type_id")
-  description String?
-  // isActive    Boolean @default(true) @map("is_active")
+  // description String? // ซ้ำกับ type 
+  // isActive    Boolean @default(true) @map("is_active") // เอาออกเพราะมันไม่ได้ใช้
 
   roomType RoomType  @relation(fields: [typeId], references: [id])
   bookings Booking[]
@@ -71,7 +72,7 @@ model Booking {
   timeSlotId  Int      @map("time_slot_id")
   bookingDate DateTime @map("booking_date") @db.Date
   totalPrice  Decimal  @map("total_price") @db.Decimal(10, 2)
-  status      String   @default("confirmed") // confirmed, cancelled, pending
+  // status      String   @default("confirmed") // confirmed, cancelled, pending เอาออก เพราะ flow คือต้องให้จ่ายเงินเลย ไม่มีติดตะกร้าแล้วจำไว้
   createdAt   DateTime @default(now()) @map("created_at")
 
   user     Profile  @relation(fields: [userId], references: [id])
@@ -85,7 +86,7 @@ model Transaction {
   id          String   @id @default(uuid())
   userId      String   @map("user_id")
   amount      Decimal  @db.Decimal(10, 2)
-  type        String // topup, payment, refund
+  // type        String // topup, payment, refund // เอาออกเพราะ flow คือต้องให้จ่ายเงินเลย ไม่มีติดตะกร้าแล้วจำไว้ ไม่มี refund ด้วย
   description String?
   createdAt   DateTime @default(now()) @map("created_at")
 

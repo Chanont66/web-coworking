@@ -5,9 +5,6 @@ import { prisma } from "@/lib/prisma";
 export async function getRoom() {
 	try {
 		const res = await prisma.room.findMany({
-			where: {
-				isActive: true,
-			},
 			include: {
 				roomType: true,
 			},
@@ -18,7 +15,6 @@ export async function getRoom() {
 		return { status: 500, message: "เกิดข้อผิดพลาดในการดึงข้อมูลห้อง" };
 	}
 }
-
 
 export async function getRoomById(roomId) {
 	try {

@@ -1,11 +1,11 @@
 "use client";
 
+import { ChevronDown, ChevronLeft } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { getRoom } from "@/actions/new/booking/get-room";
 import { Card, CardContent } from "@/components/ui/card";
-import Link from "next/link";
-import { ChevronDown, ChevronLeft } from "lucide-react";
-import { useEffect, useState } from "react";
-import Image from "next/image";
 
 export default function Page() {
 	const [rooms, setRooms] = useState([]);
@@ -118,11 +118,11 @@ export default function Page() {
 														<span className="text-2xl font-bold text-primary">
 															฿
 															{Number(
-																room.roomType?.pricePerHour || 0,
+																room.roomType?.pricePerRound || 0,
 															).toLocaleString()}
 														</span>
 														<span className="text-sm text-gray-500 font-medium">
-															/ ชม.
+															/ รอบ
 														</span>
 													</div>
 												</div>

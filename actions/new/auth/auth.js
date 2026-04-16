@@ -1,10 +1,10 @@
 "use server";
 
 import bcrypt from "bcryptjs";
+import { SignJWT } from "jose";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { loginSchema, signupSchema } from "./zod";
-import { SignJWT } from "jose";
 
 export async function signup(data) {
 	const result = signupSchema.safeParse(data);
@@ -19,7 +19,7 @@ export async function signup(data) {
 	const { username, password, email, firstName, lastName, phone } = result.data;
 
 	try {
-		const existing_user = await prisma.profile.findUnique({
+		const existing_user = await prisma.profile.findFirst({
 			where: { OR: [{ username }, { email }] },
 		});
 
@@ -44,7 +44,8 @@ export async function signup(data) {
 		});
 
 		return { status: 200, message: "สมัครสมาชิกสำเร็จ" };
-	} catch {
+	} catch (e) {
+		console.log(e);
 		return { status: 500, message: "เกิดข้อผิดพลาดในการสมัครสมาชิก" };
 	}
 }

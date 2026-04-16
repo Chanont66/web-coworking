@@ -21,15 +21,6 @@ export async function getBookedTimeSlots(roomId, date) {
 			where: {
 				roomId: Number(roomId),
 				bookingDate: new Date(date),
-				OR: [
-					{ status: "confirmed" },
-					{
-						status: "pending",
-						createdAt: {
-							gte: new Date(Date.now() - 15 * 60 * 1000), // Pending >= 15 นาที
-						},
-					},
-				],
 			},
 			select: { timeSlotId: true },
 		});

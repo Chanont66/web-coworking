@@ -45,7 +45,7 @@ export default function RoomDetail({ roomInfo, timeSlots }) {
 								{roomInfo.name}
 							</h1>
 							<p className="text-gray-600 mb-6 leading-relaxed">
-								{roomInfo.description ||
+								{roomInfo.roomType?.description ||
 									"พื้นที่ทำงานและห้องประชุมเงียบสงบ พร้อมสิ่งอำนวยความสะดวกครบครัน เหมาะสำหรับทุกรูปแบบการประชุมและนำเสนองาน"}
 							</p>
 

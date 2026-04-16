@@ -22,7 +22,7 @@ export default function BookingForm({ roomInfo, timeSlots }) {
 	const [isLoadingSlots, setIsLoadingSlots] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	const pricePerRound = roomInfo.roomType.pricePerHour;
+	const pricePerRound = roomInfo.roomType.pricePerRound;
 	const capacity = roomInfo.roomType.capacity;
 
 	const todayStr = new Date().toISOString().split("T")[0];

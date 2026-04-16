@@ -50,6 +50,7 @@ export default function Page() {
 		try {
 			const res = await login(data);
 			if (res.status === 200) {
+				router.refresh(); // บังคับให้โหลดข้อมูลใหม่ทั่วทั้ง App
 				router.push(callbackUrl);
 			} else {
 				setError(res.message);

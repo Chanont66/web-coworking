@@ -168,8 +168,10 @@ export default function Home() {
 											<div className="flex items-start justify-between gap-2">
 												<p className="font-semibold text-sm text-foreground">
 													฿
-													{loc.roomType?.pricePerHour
-														? Number(loc.roomType.pricePerHour).toLocaleString()
+													{loc.roomType?.pricePerRound
+														? Number(
+																loc.roomType.pricePerRound,
+															).toLocaleString()
 														: "—"}
 												</p>
 											</div>
@@ -177,7 +179,9 @@ export default function Home() {
 												{loc.name}
 											</p>
 											<p className="text-sm text-muted-foreground">
-												{loc.roomType?.name || loc.description || "พื้นที่ทำงาน"}
+												{loc.roomType?.name ||
+													loc.roomType?.description ||
+													"พื้นที่ทำงาน"}
 											</p>
 										</div>
 									</div>
