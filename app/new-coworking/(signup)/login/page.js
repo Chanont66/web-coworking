@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash, FaLock, FaUser } from "react-icons/fa";
 import { login } from "@/actions/new/auth/auth";
@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-export default function Page() {
+function LoginForm() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const callbackUrl = searchParams.get("callbackUrl") || "/";
@@ -178,5 +178,19 @@ export default function Page() {
 				</CardFooter>
 			</Card>
 		</div>
+	);
+}
+
+export default function Page() {
+	return (
+		<Suspense
+			fallback={
+				<div className="min-h-screen flex items-center justify-center p-4">
+					กำลังโหลดข้อมูล...
+				</div>
+			}
+		>
+			<LoginForm />
+		</Suspense>
 	);
 }
