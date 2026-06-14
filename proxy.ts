@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 	const hasSession = request.cookies.has("session");
 	const isLoginPage = pathname.startsWith("/new-coworking/login");
